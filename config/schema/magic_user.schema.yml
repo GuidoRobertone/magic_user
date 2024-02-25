@@ -3,16 +3,22 @@ magic_user.settings:
   type: config_object
   label: 'Magic User settings'
   mapping:
+    login_text:
+      type: string
+      label: 'Login text'
     apikeysecret:
       type: string
       label: 'Api Key Secret'
     apikeypublic:
       type: string
       label: 'Api Key Publisheable'
-      
+    network:
+      type: string
+      label: 'Network'
+
 block.settings.magic_user_magic_login_block:
   type: block_settings
-  label: 'Magic Login Block block'
+  label: 'Magic Login Block'
   mapping:
     foo:
       type: string
