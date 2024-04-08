@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -90,10 +91,12 @@ class MagicLoginBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function build() {
+    // TODO: Do not show the block if the user is logged in.
     $settings = $this->configFactory->get('magic_user.settings');
     $login_text = $settings->get('login_text') ?? '';
     $apikeypublic = $settings->get('apikeypublic');
     $network = $settings->get('network') ?? 'ethereum-goerli';
+    $redirect_url = Url::fromRoute('magic_user.sign_in', [], ['absolute' => TRUE])->toString();
 
     $build['content'] = [
       '#markup' => $this->t('Magic User Block'),
@@ -102,7 +105,8 @@ class MagicLoginBlock extends BlockBase implements ContainerFactoryPluginInterfa
       '#attached' => [
         'drupalSettings' => [
           'apikeypublic' => $apikeypublic,
-          'network' => $network
+          'network' => $network,
+          'redirect_url' => $redirect_url,
         ],
         'library' => [
           'magic_user/frontend',
